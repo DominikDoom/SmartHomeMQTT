@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <PackageReference Include="MQTTnet" Version="4.1.0.247" />
-    <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="4.1.0.247" />
   </ItemGroup>
 
   <ItemGroup>
