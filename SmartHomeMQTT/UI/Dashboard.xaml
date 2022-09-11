@@ -4,13 +4,21 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:viewmodels="clr-namespace:SmartHomeMQTT.UI.ViewModels"
+             xmlns:conv="clr-namespace:SmartHomeMQTT.UI.Converters"
              mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
         <viewmodels:DashboardViewModel />
     </UserControl.DataContext>
+    <UserControl.Resources>
+        <conv:BoolToOnOffConverter x:Key="BoolToOnOffConverter" />
+        <conv:BoolToTurnOnOffConverter x:Key="BoolToTurnOnOffConverter" />
+        <conv:BoolToOpenCloseConverter x:Key="BoolToOpenCloseConverter" />
+        <conv:BoolToOpenClosedConverter x:Key="BoolToOpenClosedConverter" />
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
+            <ColumnDefinition Width="1.5*"/>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
         
@@ -19,25 +27,173 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
-        <TextBlock Text="DashBoard" />
-        
+
+        <TextBlock Text="MQTT Log" FontSize="18" />
         <ListView Grid.Row="1" ItemsSource="{Binding TopicMessages}" />
 
-        <ListView Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Sensors}">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Room}" Margin="0,0,10,0" />
-                        <TextBlock Text="{Binding Name}" Margin="0,0,10,0" />
-                        <Button Content="Toggle"
-                                Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl}, Path=DataContext.ToggleSensorCommand}"
-                                CommandParameter="{Binding Id}"/>
-                    </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <StackPanel Grid.Column="1" Orientation="Horizontal">
+            <TextBlock Text="Active sensors" FontSize="18" />
+            <Button Content="+ New" Margin="20,0" Padding="5,0"
+                    Command="{Binding AddSensorCommand}"/>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1" Grid.Column="1" Margin="10,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
+                <TextBlock Text="Window sensors" FontSize="16" />
+                <ListView Grid.Row="1" ItemsSource="{Binding WindowSensors}">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Header="Room">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Room}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Sensor">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Status">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding IsOpen, Converter={StaticResource BoolToOpenClosedConverter}}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Controls">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="{Binding IsOpen, Converter={StaticResource BoolToOpenCloseConverter}}"
+                                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl},
+                                                        Path=DataContext.ToggleCommand}"
+                                                        CommandParameter="{Binding Id}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <TextBlock Grid.Row="2" Text="Thermostat sensors" FontSize="16" />
+                <ListView Grid.Row="3" ItemsSource="{Binding ThermoSensors}">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Header="Room">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Room}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Sensor">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Status">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding IsOn, Converter={StaticResource BoolToOnOffConverter}}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Current Temp">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding CurrentTemp}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Controls">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="{Binding IsOn, Converter={StaticResource BoolToTurnOnOffConverter}}"
+                                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl},
+                                                        Path=DataContext.ToggleCommand}"
+                                                        CommandParameter="{Binding Id}"/>
+                                                
+                                                <Button Content="Set low" Margin="10,0,0,0"
+                                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl},
+                                                        Path=DataContext.ToggleCommand}"
+                                                        CommandParameter="{Binding Id}"/>
+                                                <Button Content="Set high" Margin="10,0,0,0"
+                                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl},
+                                                        Path=DataContext.ToggleCommand}"
+                                                        CommandParameter="{Binding Id}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <TextBlock Grid.Row="4" Text="Outlet sensors" FontSize="16" />
+                <ListView Grid.Row="5" ItemsSource="{Binding OutletSensors}">
+                    <ListView.View>
+                        <GridView>
+                            <GridView.Columns>
+                                <GridViewColumn Header="Room">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Room}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Sensor">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding Name}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Status">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{Binding IsOn, Converter={StaticResource BoolToOnOffConverter}}" />
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Controls">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Content="{Binding IsOn, Converter={StaticResource BoolToTurnOnOffConverter}}"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl},
+                                                Path=DataContext.ToggleCommand}"
+                                            CommandParameter="{Binding Id}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView.Columns>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </ScrollViewer >
+        
         <StackPanel Grid.Row="2" Orientation="Horizontal" >
             <TextBox Width="200" Text="{Binding PublishMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             <Button Content="Publish" Margin="10,0,0,0" Command="{Binding PublishCommand}" CommandParameter="{Binding PublishMessage}" />

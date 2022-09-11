@@ -14,6 +14,7 @@ namespace SmartHomeMQTT.MQTT.Sensors
                     return;
 
                 _isOpen = value;
+                OnPropertyChanged();
                 PublishStatus();
             }
         }

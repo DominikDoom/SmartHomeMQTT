@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="UI\Converters\BoolToOpenClosedConverter.cs\**" />
+    <EmbeddedResource Remove="UI\Converters\BoolToOpenClosedConverter.cs\**" />
+    <None Remove="UI\Converters\BoolToOpenClosedConverter.cs\**" />
+    <Page Remove="UI\Converters\BoolToOpenClosedConverter.cs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 

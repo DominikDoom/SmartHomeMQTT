@@ -34,8 +34,8 @@ namespace SmartHomeMQTT.UI
             await ClientHandler.Subscribe(ws.Topic);
             await ClientHandler.Subscribe(ws2.Topic);
 
-            VM.Sensors.Add(ws);
-            VM.Sensors.Add(ws2);
+            VM.WindowSensors.Add(ws);
+            VM.WindowSensors.Add(ws2);
             ClientHandler.MessageReceivedEvent += HandleMessageReceived;
         }
 
@@ -54,6 +54,22 @@ namespace SmartHomeMQTT.UI
                         : "Closed";
                     break;
 
+                case "outlet":
+                    status = bool.Parse(message)
+                        ? "On"
+                        : "Off";
+                    break;
+
+                case "thermo":
+                    string[] messageParts = message.Split(",");
+                    string onStatus = bool.Parse(messageParts[0])
+                        ? "On"
+                        : "Off";
+                    string tempStatus = bool.Parse(messageParts[1])
+                        ? "Low mode"
+                        : "High mode";
+                    status = $"{onStatus}, {tempStatus}, low={messageParts[2]} °C, high={messageParts[3]} °C";
+                    break;
                 default:
                     break;
             };

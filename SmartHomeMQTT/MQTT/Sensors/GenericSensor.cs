@@ -1,9 +1,11 @@
 ﻿using SmartHomeMQTT.Utils;
 using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace SmartHomeMQTT.MQTT.Sensors
 {
-    public abstract class GenericSensor
+    public abstract class GenericSensor : INotifyPropertyChanged
     {
         public Guid Id { get; }
         public string Room { get; }
@@ -19,5 +21,10 @@ namespace SmartHomeMQTT.MQTT.Sensors
         }
 
         public abstract void PublishStatus();
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+            => PropertyChanged?.Invoke(this, new(propertyName));
     }
 }

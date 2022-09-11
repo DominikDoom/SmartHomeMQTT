@@ -1,8 +1,8 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
+using MQTTnet.Packets;
 using MQTTnet.Protocol;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
 using System.Threading;
@@ -15,7 +15,7 @@ namespace SmartHomeMQTT.MQTT
         private static IMqttClient _client;
         public static IMqttClient Client => _client ??= Init();
 
-        private static readonly List<string> SubscribedTopics = new();
+        //private static readonly List<string> SubscribedTopics = new();
 
         public static event EventHandler<MqttApplicationMessageReceivedEventArgs> MessageReceivedEvent;
 
@@ -61,15 +61,16 @@ namespace SmartHomeMQTT.MQTT
             if (!Client.IsConnected)
                 await Connect();
 
-            SubscribedTopics.Add(topic);
+            //SubscribedTopics.Add(topic);
 
             // Subscribe to the provided topic
-            MqttTopicFilterBuilder fb = new MqttTopicFilterBuilder()
-                .WithAtMostOnceQoS();
-            SubscribedTopics.ForEach((sensorTopic) => fb.WithTopic(sensorTopic));
+            MqttTopicFilter f = new MqttTopicFilterBuilder()
+                .WithAtMostOnceQoS()
+                .WithTopic(topic)
+                .Build();
 
             MqttClientSubscribeOptions mqttSubscribeOptions = new MqttClientSubscribeOptionsBuilder()
-                .WithTopicFilter(fb.Build())
+                .WithTopicFilter(f)
                 .Build();
 
             _ = await Client?.SubscribeAsync(mqttSubscribeOptions);
