@@ -4,7 +4,6 @@ using SmartHomeMQTT.MQTT.Sensors;
 using SmartHomeMQTT.UI.ViewModels;
 using System;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows.Controls;
 
 namespace SmartHomeMQTT.UI

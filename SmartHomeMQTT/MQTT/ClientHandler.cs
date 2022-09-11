@@ -1,6 +1,5 @@
 ﻿using MQTTnet;
 using MQTTnet.Client;
-using MQTTnet.Packets;
 using MQTTnet.Protocol;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,7 @@ namespace SmartHomeMQTT.MQTT
         private static IMqttClient _client;
         public static IMqttClient Client => _client ??= Init();
 
-        private static List<string> SubscribedTopics = new();
+        private static readonly List<string> SubscribedTopics = new();
 
         public static event EventHandler<MqttApplicationMessageReceivedEventArgs> MessageReceivedEvent;
 
