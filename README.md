@@ -9,4 +9,4 @@ For this reason, code documentation and test coverage were a central focus point
 
 ## Additional resources
 As part of the assignment, additional documentation (like UML class diagrams) had to be created.
-This can be found in the project's [wiki](https://github.com/DominikDoom/SmartHomeMQTT/wiki)
+This can be found in the project's [wiki](https://github.com/DominikDoom/SmartHomeMQTT/wiki).
