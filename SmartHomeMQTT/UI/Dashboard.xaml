@@ -25,7 +25,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Text="MQTT Log" FontSize="18" />
@@ -131,7 +130,7 @@
                                                         Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl},
                                                         Path=DataContext.ToggleCommand}"
                                                         CommandParameter="{Binding Id}"/>
-                                                
+
                                                 <Button Content="Set temp" Margin="10,0,0,0"
                                                         Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl},
                                                         Path=DataContext.SetTempCommand}"
@@ -189,10 +188,5 @@
                 </ListView>
             </Grid>
         </ScrollViewer >
-        
-        <StackPanel Grid.Row="2" Orientation="Horizontal" >
-            <TextBox Width="200" Text="{Binding PublishMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-            <Button Content="Publish" Margin="10,0,0,0" Command="{Binding PublishCommand}" CommandParameter="{Binding PublishMessage}" />
-        </StackPanel>
     </Grid>
 </UserControl>

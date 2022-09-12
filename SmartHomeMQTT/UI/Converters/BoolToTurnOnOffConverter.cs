@@ -4,6 +4,10 @@ using System.Windows.Data;
 
 namespace SmartHomeMQTT.UI.Converters
 {
+    /// <summary>
+    /// Converts a bool to "Turn off" for true and "Turn on" for false
+    /// Used for button text as it is the inverse of the actual state.
+    /// </summary>
     public class BoolToTurnOnOffConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

@@ -6,9 +6,15 @@ using System.Text;
 
 namespace SmartHomeMQTT.MQTT.Sensors
 {
+    /// <summary>
+    /// Sensor representing a radiator thermostat.
+    /// </summary>
     public class ThermoSensor : GenericSensor
     {
         private bool _isOn = true;
+        /// <summary>
+        /// Whether the thermostat is on or off.
+        /// </summary>
         public bool IsOn
         {
             get => _isOn;
@@ -25,6 +31,10 @@ namespace SmartHomeMQTT.MQTT.Sensors
         }
 
         private bool _isLowTemp;
+        /// <summary>
+        /// Whether the thermostat is currently set to the low temperature
+        /// as a reaction to an open window.
+        /// </summary>
         public bool IsLowTemp
         {
             get => _isLowTemp;
@@ -41,6 +51,9 @@ namespace SmartHomeMQTT.MQTT.Sensors
         }
 
         private int _lowTemp = 12;
+        /// <summary>
+        /// The low temperature the sensor will regulate to if a window is open.
+        /// </summary>
         public int LowTemp
         {
             get => _lowTemp;
@@ -56,6 +69,9 @@ namespace SmartHomeMQTT.MQTT.Sensors
         }
 
         private int _highTemp = 22;
+        /// <summary>
+        /// The high temperature the sensor will regulate to if no window is open.
+        /// </summary>
         public int HighTemp
         {
             get => _highTemp;
@@ -71,6 +87,13 @@ namespace SmartHomeMQTT.MQTT.Sensors
             }
         }
 
+        /// <summary>
+        /// The current temperature, derived from the current high/low mode
+        /// and their respective temperatures.
+        /// <br/>
+        /// If the thermostat is turned off,
+        /// the temperature will be displayed as 0.
+        /// </summary>
         public int CurrentTemp =>
             IsOn
             ? IsLowTemp
@@ -78,11 +101,40 @@ namespace SmartHomeMQTT.MQTT.Sensors
                 : HighTemp
             : 0;
 
+        /// <summary>
+        /// Constructor for ThermoSensor.
+        /// </summary>
+        /// <param name="id">The sensor id</param>
+        /// <param name="room">The room the sensor is in</param>
+        /// <param name="name">The sensor's display name</param>
         public ThermoSensor(Guid id, string room, string name) : base(id, room, "thermo", name) { }
 
+        /// <summary>
+        /// Publishes status of the thermostat.
+        /// Payload will be, comma-separated and in order:
+        /// <list type="number">
+        /// <item>True/False for the On/Off status</item>
+        /// <item>True/False for the Low/High setting status</item>
+        /// <item>Int for the low temperature</item>
+        /// <item>Int for the high temperature</item>
+        /// </list>
+        /// </summary>
         public override void PublishStatus() =>
             _ = ClientHandler.Publish(Topic, string.Join(",", IsOn, IsLowTemp, LowTemp, HighTemp));
 
+        /// <summary>
+        /// Handles the <see cref="ClientHandler.MessageReceivedEvent"/>.
+        /// <br/>
+        /// Depending on the payload, the action will be one of the following:
+        /// <list type="bullet">
+        /// <item>Toggle on/off</item>
+        /// <item>Set new high temperature</item>
+        /// <item>Regulate temperature to low setting if a window in the same room opened</item>
+        /// <item>Regulate temperature to high setting if a window in the same room closed</item>
+        /// </list>
+        /// </summary>
+        /// <param name="sender">The event sender, usually null here</param>
+        /// <param name="e">The event parameters containing the message</param>
         public override void HandleMessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
         {
             if (e.ApplicationMessage.Topic != TopicString.TOPIC_COMM)
@@ -111,6 +163,9 @@ namespace SmartHomeMQTT.MQTT.Sensors
             }
         }
 
+        /// <summary>
+        /// Toggles the thermostat on/off
+        /// </summary>
         public void Toggle() => IsOn = !IsOn;
     }
 }

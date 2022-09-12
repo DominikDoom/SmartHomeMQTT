@@ -46,7 +46,11 @@ namespace SmartHomeMQTT.UI.ViewModels
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-
+        /// <summary>
+        /// NotifyPropertyChanged implementation.
+        /// Uses <see cref="CallerMemberNameAttribute"/> for convenience.
+        /// </summary>
+        /// <param name="propertyName"></param>
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
             => PropertyChanged?.Invoke(this, new(propertyName));
     }

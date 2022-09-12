@@ -3,3 +3,6 @@
 # IDE0011: Geschweifte Klammern hinzufügen
 csharp_prefer_braces = when_multiline
 csharp_style_expression_bodied_methods=when_on_single_line:silent
+
+# CA1707: Bezeichner dürfen keine Unterstriche enthalten
+dotnet_diagnostic.CA1707.severity = none

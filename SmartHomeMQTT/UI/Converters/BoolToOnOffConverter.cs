@@ -4,6 +4,9 @@ using System.Windows.Data;
 
 namespace SmartHomeMQTT.UI.Converters
 {
+    /// <summary>
+    /// Converts a bool to "On" for true and "Off" for false
+    /// </summary>
     public class BoolToOnOffConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
