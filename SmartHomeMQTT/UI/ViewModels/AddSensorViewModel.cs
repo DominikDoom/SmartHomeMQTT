@@ -47,7 +47,7 @@ namespace SmartHomeMQTT.UI.ViewModels
             set
             {
                 Set(value);
-                _saveCommand.RaiseCanExecuteChanged();
+                _saveCommand?.RaiseCanExecuteChanged();
             }
         }
         /// <summary>
@@ -61,7 +61,7 @@ namespace SmartHomeMQTT.UI.ViewModels
             set
             {
                 Set(value);
-                _saveCommand.RaiseCanExecuteChanged();
+                _saveCommand?.RaiseCanExecuteChanged();
             }
         }
 

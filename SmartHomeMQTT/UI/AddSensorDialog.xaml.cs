@@ -56,7 +56,7 @@ namespace SmartHomeMQTT.UI
         private void HandleSaveEvent(object sender, GenericSensor e)
         {
             DialogResult = true;
-            OnSuccess.Invoke(e);
+            OnSuccess?.Invoke(e);
             SystemCommands.CloseWindow(this);
         }
     }
