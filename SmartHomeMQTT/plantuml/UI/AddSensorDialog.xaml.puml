@@ -1,0 +1,6 @@
+@startuml
+class AddSensorDialog <<partial>> {
+    + AddSensorDialog(onSuccess:Action<GenericSensor>)
+}
+Window <|-- AddSensorDialog
+@enduml

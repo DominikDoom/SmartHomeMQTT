@@ -1,0 +1,10 @@
+@startuml
+class OutletSensor {
+    + IsOn : bool <<get>> <<set>>
+    + OutletSensor(id:Guid, room:string, name:string)
+    + <<override>> PublishStatus() : void
+    + <<override>> HandleMessageReceived(sender:object, e:MqttApplicationMessageReceivedEventArgs) : void
+    + {static} IsBetween(now:DateTime, start:TimeSpan, end:TimeSpan) : bool
+}
+GenericSensor <|-- OutletSensor
+@enduml

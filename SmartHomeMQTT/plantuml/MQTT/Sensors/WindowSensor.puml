@@ -1,0 +1,9 @@
+@startuml
+class WindowSensor {
+    + IsOpen : bool <<get>> <<set>>
+    + WindowSensor(id:Guid, room:string, name:string)
+    + <<override>> PublishStatus() : void
+    + <<override>> HandleMessageReceived(sender:object, e:MqttApplicationMessageReceivedEventArgs) : void
+}
+GenericSensor <|-- WindowSensor
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+class DashboardViewModel {
+    + DashboardViewModel()
+    + TopicMessages : ObservableCollection<string>
+    + WindowSensors : ObservableCollection<WindowSensor>
+    + ThermoSensors : ObservableCollection<WindowSensor>
+    + OutletSensors : ObservableCollection<WindowSensor>
+}
+Bindable <|-- DashboardViewModel
+DashboardViewModel --> "ClientHandler" ClientHandler
+DashboardViewModel --> "AddSensorCommand" ICommand
+DashboardViewModel --> "ToggleCommand" ICommand
+DashboardViewModel --> "SetTempCommand" ICommand
+@enduml

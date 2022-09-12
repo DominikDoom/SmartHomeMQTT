@@ -1,0 +1,20 @@
+@startuml
+class "DelegateCommand`1"<T> {
+    +  <<event>> CanExecuteChanged : EventHandler 
+    + DelegateCommand(execute:Action<T>)
+    + DelegateCommand(execute:Action<T>, canExecute:Predicate<T>)
+    + CanExecute(parameter:object) : bool
+    + Execute(parameter:object) : void
+    + RaiseCanExecuteChanged() : void
+}
+class DelegateCommand {
+    +  <<event>> CanExecuteChanged : EventHandler 
+    + DelegateCommand(execute:Action)
+    + DelegateCommand(execute:Action, canExecute:Func<bool>)
+    + CanExecute(parameter:object) : bool
+    + Execute(parameter:object) : void
+    + RaiseCanExecuteChanged() : void
+}
+ICommand <|-- "DelegateCommand`1"
+ICommand <|-- DelegateCommand
+@enduml

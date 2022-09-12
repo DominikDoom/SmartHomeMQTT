@@ -1,0 +1,6 @@
+@startuml
+class Dashboard <<partial>> {
+    + Dashboard()
+}
+UserControl <|-- Dashboard
+@enduml

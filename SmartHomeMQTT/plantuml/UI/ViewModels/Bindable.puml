@@ -1,0 +1,6 @@
+@startuml
+abstract class Bindable {
+    +  <<event>> PropertyChanged : PropertyChangedEventHandler 
+}
+INotifyPropertyChanged <|-- Bindable
+@enduml

@@ -1,0 +1,9 @@
+@startuml
+class ClientHandler {
+    +  <<event>> MessageReceivedEvent : EventHandler<MqttApplicationMessageReceivedEventArgs> 
+    + <<async>> Connect() : Task
+    + <<async>> Subscribe(topic:string) : Task
+    + <<async>> Publish(topic:string, message:string) : Task
+}
+ClientHandler --> "Client" IMqttClient
+@enduml

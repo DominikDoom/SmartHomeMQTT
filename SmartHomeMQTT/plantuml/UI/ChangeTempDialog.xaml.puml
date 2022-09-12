@@ -1,0 +1,6 @@
+@startuml
+class ChangeTempDialog <<partial>> {
+    + ChangeTempDialog(currentTemp:int, onSuccess:Action<int>)
+}
+Window <|-- ChangeTempDialog
+@enduml

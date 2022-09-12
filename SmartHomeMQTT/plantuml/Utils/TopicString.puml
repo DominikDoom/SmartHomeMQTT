@@ -1,0 +1,6 @@
+@startuml
+class TopicString <<static>> {
+    + {static} <<readonly>> TOPIC_COMM : string
+    + {static} Create(room:string, sensorType:string, id:string) : string
+}
+@enduml

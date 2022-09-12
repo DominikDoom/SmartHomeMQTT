@@ -1,0 +1,14 @@
+@startuml
+class ThermoSensor {
+    + IsOn : bool <<get>> <<set>>
+    + IsLowTemp : bool <<get>> <<set>>
+    + LowTemp : int <<get>> <<set>>
+    + HighTemp : int <<get>> <<set>>
+    + CurrentTemp : int <<get>>
+    + ThermoSensor(id:Guid, room:string, name:string)
+    + <<override>> PublishStatus() : void
+    + <<override>> HandleMessageReceived(sender:object, e:MqttApplicationMessageReceivedEventArgs) : void
+    + Toggle() : void
+}
+GenericSensor <|-- ThermoSensor
+@enduml

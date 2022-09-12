@@ -1,0 +1,14 @@
+@startuml
+abstract class GenericSensor {
+    + Room : string <<get>>
+    + Name : string <<get>>
+    + Topic : string <<get>>
+    + GenericSensor(id:Guid, room:string, type:string, name:string)
+    + {abstract} HandleMessageReceived(sender:object, e:MqttApplicationMessageReceivedEventArgs) : void
+    + {abstract} PublishStatus() : void
+    +  <<event>> PropertyChanged : PropertyChangedEventHandler 
+}
+INotifyPropertyChanged <|-- GenericSensor
+GenericSensor --> "Id" Guid
+GenericSensor --> "ClientHandler" ClientHandler
+@enduml

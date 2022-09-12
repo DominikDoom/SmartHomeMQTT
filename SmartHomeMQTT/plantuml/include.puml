@@ -1,0 +1,44 @@
+@startuml
+skinparam groupInheritance 3
+!include .\\App.xaml.puml
+!include .\\MQTT\ClientHandler.puml
+!include .\\UI\AddSensorDialog.xaml.puml
+!include .\\UI\ChangeTempDialog.xaml.puml
+!include .\\UI\Dashboard.xaml.puml
+!include .\\UI\MainWindow.xaml.puml
+!include .\\Utils\DelegateCommand.puml
+!include .\\Utils\TopicString.puml
+!include .\\MQTT\Sensors\GenericSensor.puml
+!include .\\MQTT\Sensors\OutletSensor.puml
+!include .\\MQTT\Sensors\SensorType.puml
+!include .\\MQTT\Sensors\ThermoSensor.puml
+!include .\\MQTT\Sensors\WindowSensor.puml
+!include .\\UI\Converters\BoolToOnOffConverter.puml
+!include .\\UI\Converters\BoolToOpenCloseConverter.puml
+!include .\\UI\Converters\BoolToOpenClosedConverter.puml
+!include .\\UI\Converters\BoolToTurnOnOffConverter.puml
+!include .\\UI\ViewModels\AddSensorViewModel.puml
+!include .\\UI\ViewModels\Bindable.puml
+!include .\\UI\ViewModels\ChangeTempViewModel.puml
+!include .\\UI\ViewModels\DashboardViewModel.puml
+!include .\\obj\Debug\net5.0-windows\.NETCoreApp,Version=v5.0.AssemblyAttributes.puml
+!include .\\obj\Debug\net5.0-windows\App.g.puml
+!include .\\obj\Debug\net5.0-windows\App.g.i.puml
+!include .\\obj\Debug\net5.0-windows\GeneratedInternalTypeHelper.g.puml
+!include .\\obj\Debug\net5.0-windows\GeneratedInternalTypeHelper.g.i.puml
+!include .\\obj\Debug\net5.0-windows\MainWindow.g.i.puml
+!include .\\obj\Debug\net5.0-windows\SmartHomeMQTT.AssemblyInfo.puml
+!include .\\obj\Release\net5.0-windows\.NETCoreApp,Version=v5.0.AssemblyAttributes.puml
+!include .\\obj\Release\net5.0-windows\App.g.puml
+!include .\\obj\Release\net5.0-windows\SmartHomeMQTT.AssemblyInfo.puml
+!include .\\obj\Debug\net5.0-windows\UI\AddSensorDialog.g.puml
+!include .\\obj\Debug\net5.0-windows\UI\AddSensorDialog.g.i.puml
+!include .\\obj\Debug\net5.0-windows\UI\App.g.i.puml
+!include .\\obj\Debug\net5.0-windows\UI\ChangeTempDialog.g.puml
+!include .\\obj\Debug\net5.0-windows\UI\ChangeTempDialog.g.i.puml
+!include .\\obj\Debug\net5.0-windows\UI\Dashboard.g.puml
+!include .\\obj\Debug\net5.0-windows\UI\Dashboard.g.i.puml
+!include .\\obj\Debug\net5.0-windows\UI\MainWindow.g.puml
+!include .\\obj\Debug\net5.0-windows\UI\MainWindow.g.i.puml
+!include .\\obj\Release\net5.0-windows\UI\MainWindow.g.puml
+@enduml

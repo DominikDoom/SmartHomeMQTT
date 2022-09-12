@@ -1,0 +1,10 @@
+@startuml
+class ChangeTempViewModel {
+    + {static}  <<event>> SaveEvent : EventHandler<int> 
+    + {static}  <<event>> CancelEvent : EventHandler 
+    + TempValue : int? <<get>> <<set>>
+}
+Bindable <|-- ChangeTempViewModel
+ChangeTempViewModel --> "SaveCommand" ICommand
+ChangeTempViewModel --> "CancelCommand" ICommand
+@enduml

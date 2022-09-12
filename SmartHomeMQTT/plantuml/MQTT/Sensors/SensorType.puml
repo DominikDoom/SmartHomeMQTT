@@ -1,0 +1,7 @@
+@startuml
+enum SensorType {
+    WINDOW,
+    THERMO,
+    OUTLET,
+}
+@enduml

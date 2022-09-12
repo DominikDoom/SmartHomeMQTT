@@ -1,0 +1,16 @@
+@startuml
+class AddSensorViewModel {
+    + {static}  <<event>> SaveEvent : EventHandler<GenericSensor> 
+    + {static}  <<event>> CancelEvent : EventHandler 
+    + Room : string <<get>> <<set>>
+    + Name : string <<get>> <<set>>
+    + AddSensorViewModel()
+}
+class "IEnumerable`1"<T> {
+}
+Bindable <|-- AddSensorViewModel
+AddSensorViewModel --> "SensorTypeValues<SensorType>" "IEnumerable`1"
+AddSensorViewModel --> "SelectedType" SensorType
+AddSensorViewModel --> "SaveCommand" ICommand
+AddSensorViewModel --> "CancelCommand" ICommand
+@enduml
