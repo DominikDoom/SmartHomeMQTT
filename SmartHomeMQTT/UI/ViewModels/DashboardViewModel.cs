@@ -10,6 +10,8 @@ namespace SmartHomeMQTT.UI.ViewModels
 {
     public class DashboardViewModel : Bindable
     {
+        public ClientHandler ClientHandler { get; }
+
         public ObservableCollection<string> TopicMessages { get => Get(); set => Set(value); }
 
         public ObservableCollection<WindowSensor> WindowSensors { get => Get(); set => Set(value); }
@@ -32,6 +34,8 @@ namespace SmartHomeMQTT.UI.ViewModels
             WindowSensors = new();
             ThermoSensors = new();
             OutletSensors = new();
+
+            ClientHandler = new();
         }
 
         private DelegateCommand<string> _publishCommand;
@@ -65,33 +69,41 @@ namespace SmartHomeMQTT.UI.ViewModels
             _ = d.ShowDialog();
         }
 
-        private static void SendMessage(string message)
+        private void SendMessage(string message)
             => _ = ClientHandler.Publish("shmqtt/livingroom/window/0", message);
         private bool CanSendMessage => PublishMessage?.Trim().Length > 0;
 
         private DelegateCommand<Guid> _toggleCommand;
         public ICommand ToggleCommand => _toggleCommand ??= new((id) => ToggleSensor(id));
-        private void ToggleSensor(Guid id)
-        {
+        private async void ToggleSensor(Guid id)
+        {   
             List<WindowSensor> wSensors = new(WindowSensors);
             List<ThermoSensor> tSensors = new(ThermoSensors);
             List<OutletSensor> oSensors = new(OutletSensors);
 
+            string room = "";
+            string type = "";
+            bool toggleStatus = false;
             if (wSensors.Find(s => s.Id == id) is WindowSensor ws)
             {
-                ws?.Toggle();
-                return;
+                room = ws.Room;
+                type = "window";
+                toggleStatus = !ws.IsOpen;
             }
-            if (tSensors.Find(s => s.Id == id) is ThermoSensor ts)
+            else if (tSensors.Find(s => s.Id == id) is ThermoSensor ts)
             {
-                ts?.Toggle();
-                return;
+                room = ts.Room;
+                type = "thermo";
+                toggleStatus = !ts.IsOn;
             }
-            if (oSensors.Find(s => s.Id == id) is OutletSensor os)
+            else if (oSensors.Find(s => s.Id == id) is OutletSensor os)
             {
-                os?.Toggle();
-                return;
+                room = os.Room;
+                type = "outlet";
+                toggleStatus = !os.IsOn;
             }
+
+            await ClientHandler.Publish($"{TopicString.TOPIC_COMM}", $"{room},{type},{id},toggle,{toggleStatus}");
         }
     }
 }

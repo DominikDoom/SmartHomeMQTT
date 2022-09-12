@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace SmartHomeMQTT.MQTT
 {
-    public static class ClientHandler
+    public class ClientHandler
     {
-        private static IMqttClient _client;
-        public static IMqttClient Client => _client ??= Init();
+        private IMqttClient _client;
+        public  IMqttClient Client => _client ??= Init();
 
         //private static readonly List<string> SubscribedTopics = new();
 
-        public static event EventHandler<MqttApplicationMessageReceivedEventArgs> MessageReceivedEvent;
+        public event EventHandler<MqttApplicationMessageReceivedEventArgs> MessageReceivedEvent;
 
-        private static IMqttClient Init()
+        private IMqttClient Init()
         {
             MqttFactory mqttFactory = new();
 
@@ -41,7 +41,7 @@ namespace SmartHomeMQTT.MQTT
             return mClient;
         }
 
-        public static async Task Connect()
+        public async Task Connect()
         {
             // Configure options
             MqttClientOptions mqttClientOptions = new MqttClientOptionsBuilder()
@@ -56,7 +56,7 @@ namespace SmartHomeMQTT.MQTT
             Debug.WriteLine($"The MQTT client is connected.");
         }
 
-        public static async Task Subscribe(string topic)
+        public async Task Subscribe(string topic)
         {
             if (!Client.IsConnected)
                 await Connect();
@@ -77,7 +77,7 @@ namespace SmartHomeMQTT.MQTT
             Debug.WriteLine($"MQTT client subscribed to topic {topic}");
         }
 
-        public static async Task Publish(string topic, string message)
+        public async Task Publish(string topic, string message)
         {
             if (!Client.IsConnected)
                 await Connect();

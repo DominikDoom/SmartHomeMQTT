@@ -27,16 +27,18 @@ namespace SmartHomeMQTT.UI
 
         private async void InitSensors()
         {
+            await VM.ClientHandler.Connect();
+
             // Subscribe to test topic
             WindowSensor ws = new(Guid.NewGuid(), "bathroom", "Main window");
             WindowSensor ws2 = new(Guid.NewGuid(), "bathroom", "Side window");
 
-            await ClientHandler.Subscribe(ws.Topic);
-            await ClientHandler.Subscribe(ws2.Topic);
+            await VM.ClientHandler.Subscribe(ws.Topic);
+            await VM.ClientHandler.Subscribe(ws2.Topic);
 
             VM.WindowSensors.Add(ws);
             VM.WindowSensors.Add(ws2);
-            ClientHandler.MessageReceivedEvent += HandleMessageReceived;
+            VM.ClientHandler.MessageReceivedEvent += HandleMessageReceived;
         }
 
         private void HandleMessageReceived(object sender, MqttApplicationMessageReceivedEventArgs e)
