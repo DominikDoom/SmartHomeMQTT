@@ -43,7 +43,7 @@ namespace SmartHomeMqttTests
         }
 
         /// <summary>
-        /// Tests publishing & subscription on the same topic
+        /// Tests publishing &amp; subscription on the same topic
         /// </summary>
         [Fact(DisplayName = "Publishing & Subscription")]
         public async void TestPublishSubscribe()
