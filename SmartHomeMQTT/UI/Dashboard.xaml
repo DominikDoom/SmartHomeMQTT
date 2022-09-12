@@ -116,7 +116,7 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="Current Temp">
+                                <GridViewColumn Header="Temp (°C)">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <TextBlock Text="{Binding CurrentTemp}" />
@@ -132,13 +132,9 @@
                                                         Path=DataContext.ToggleCommand}"
                                                         CommandParameter="{Binding Id}"/>
                                                 
-                                                <Button Content="Set low" Margin="10,0,0,0"
+                                                <Button Content="Set temp" Margin="10,0,0,0"
                                                         Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl},
-                                                        Path=DataContext.ToggleCommand}"
-                                                        CommandParameter="{Binding Id}"/>
-                                                <Button Content="Set high" Margin="10,0,0,0"
-                                                        Command="{Binding RelativeSource={RelativeSource AncestorType=ItemsControl},
-                                                        Path=DataContext.ToggleCommand}"
+                                                        Path=DataContext.SetTempCommand}"
                                                         CommandParameter="{Binding Id}"/>
                                             </StackPanel>
                                         </DataTemplate>

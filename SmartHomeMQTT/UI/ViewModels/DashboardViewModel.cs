@@ -76,7 +76,7 @@ namespace SmartHomeMQTT.UI.ViewModels
         private DelegateCommand<Guid> _toggleCommand;
         public ICommand ToggleCommand => _toggleCommand ??= new((id) => ToggleSensor(id));
         private async void ToggleSensor(Guid id)
-        {   
+        {
             List<WindowSensor> wSensors = new(WindowSensors);
             List<ThermoSensor> tSensors = new(ThermoSensors);
             List<OutletSensor> oSensors = new(OutletSensors);
@@ -104,6 +104,24 @@ namespace SmartHomeMQTT.UI.ViewModels
             }
 
             await ClientHandler.Publish($"{TopicString.TOPIC_COMM}", $"{room},{type},{id},toggle,{toggleStatus}");
+        }
+
+        private DelegateCommand<Guid> _setTempCommand;
+        public ICommand SetTempCommand => _setTempCommand ??= new((id) => SetTemp(id));
+        private void SetTemp(Guid id)
+        {
+            List<ThermoSensor> tSensors = new(ThermoSensors);
+
+            if (tSensors.Find(s => s.Id == id) is ThermoSensor ts)
+            {
+                string room = ts.Room;
+
+                ChangeTempDialog d = new(ts.HighTemp, async (returnedTemp) =>
+                {
+                    await ClientHandler.Publish($"{TopicString.TOPIC_COMM}", $"{room},thermo,{id},settemp,{returnedTemp}");
+                });
+                _ = d.ShowDialog();
+            }
         }
     }
 }

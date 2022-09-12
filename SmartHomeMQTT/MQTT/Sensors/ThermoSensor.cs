@@ -1,6 +1,7 @@
 ﻿using MQTTnet.Client;
 using SmartHomeMQTT.Utils;
 using System;
+using System.Globalization;
 using System.Text;
 
 namespace SmartHomeMQTT.MQTT.Sensors
@@ -18,6 +19,7 @@ namespace SmartHomeMQTT.MQTT.Sensors
 
                 _isOn = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(CurrentTemp));
                 PublishStatus();
             }
         }
@@ -50,7 +52,6 @@ namespace SmartHomeMQTT.MQTT.Sensors
                 _lowTemp = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(CurrentTemp));
-                PublishStatus();
             }
         }
 
@@ -70,7 +71,12 @@ namespace SmartHomeMQTT.MQTT.Sensors
             }
         }
 
-        public int CurrentTemp => IsLowTemp ? LowTemp : HighTemp;
+        public int CurrentTemp =>
+            IsOn
+            ? IsLowTemp
+                ? LowTemp
+                : HighTemp
+            : 0;
 
         public ThermoSensor(Guid id, string room, string name) : base(id, room, "thermo", name) { }
 
@@ -84,15 +90,24 @@ namespace SmartHomeMQTT.MQTT.Sensors
 
             string[] messageParts = Encoding.UTF8.GetString(e.ApplicationMessage.Payload).Split(",");
 
+            // Toggle on/off
             if (messageParts[2] == Id.ToString() && messageParts[3] == "toggle")
                 Toggle();
 
+            // Change temperature
+            if (messageParts[2] == Id.ToString()
+                && messageParts[3] == "settemp")
+            {
+                HighTemp = int.Parse(messageParts[4], NumberStyles.Integer, CultureInfo.InvariantCulture);
+            }
+
             // A window in the same room was opened, set temp to the low setting
             if (messageParts[0] == Room
-                && messageParts[1] == "window"
-                && messageParts[3] == "toggle")
+            && messageParts[1] == "window"
+            && messageParts[3] == "toggle")
             {
-                bool toggleStatus = bool.Parse(messageParts[4]);
+                bool isOpen = bool.Parse(messageParts[4]);
+                IsLowTemp = isOpen;
             }
         }
 

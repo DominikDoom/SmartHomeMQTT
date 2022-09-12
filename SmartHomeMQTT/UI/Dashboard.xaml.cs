@@ -1,5 +1,4 @@
 ﻿using MQTTnet.Client;
-using SmartHomeMQTT.MQTT;
 using SmartHomeMQTT.MQTT.Sensors;
 using SmartHomeMQTT.UI.ViewModels;
 using System;
